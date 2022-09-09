@@ -1,0 +1,36 @@
+- defaultTab: nodes
+  description: deploy bigtop components
+  executionEnabled: true
+  id: 04f08492-6c62-4451-9ee6-c0ee71fd4cc8
+  loglevel: INFO
+  name: bigtop_deploy_master
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: tags:master
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: create bigtop code repo
+      script: |-
+        puppet apply -e "vcsrepo { '/bigtop-home':
+          ensure   => latest,
+          provider => git,
+          source   => 'https://github.com/vivostar/bigtop.git',
+          revision => 'production',
+        }"
+    - description: puppet apply
+      exec: puppet apply --parser future --hiera_config=/bigtop-home/bigtop-deploy/puppet/hiera.yaml
+        --modulepath=/bigtop-home/bigtop-deploy/puppet/modules:/etc/puppet/modules:/usr/share/puppet/modules:/etc/puppetlabs/code/modules:/etc/puppet/code/modules
+        /bigtop-home/bigtop-deploy/puppet/manifests
+    keepgoing: false
+    strategy: node-first
+  uuid: 04f08492-6c62-4451-9ee6-c0ee71fd4cc8

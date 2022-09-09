@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 18720968-0d85-4ac9-ab86-91def4539568
+  loglevel: INFO
+  name: edit host
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: tags:bigtop
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: edit host
+      script: |-
+        cat > /etc/hosts << EOF
+        ::1   localhost       localhost.localdomain   localhost6      localhost6.localdomain6
+        127.0.0.1     localhost       localhost.localdomain   localhost4      localhost4.localdomain4
+        172.22.16.208 master
+        172.22.16.206 worker01
+        172.22.16.205 worker02
+        172.22.16.207 worker03
+        EOF
+    keepgoing: false
+    strategy: node-first
+  uuid: 18720968-0d85-4ac9-ab86-91def4539568
